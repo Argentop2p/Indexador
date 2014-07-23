@@ -4,9 +4,9 @@
 Modulo: Script Indexador
 Descripción: Indexar los posts, con TAGs.
 Entrada: f= forum number; t= que buscar (1:(COM) - 2: (PED));
-         l= (letra)  [l es un parámetro opcional]; a= lista por año [a es un parámetro opcional]
-         ie: indexar.php?f=5&t=1&l=d&a
-         ie: $ php indexar.php --f=5 --t=1 --l=x -a
+	 l= (letra)  [l es un parámetro opcional]; a= lista por año [a es un parámetro opcional]
+	 ie: indexar.php?f=5&t=1&l=d&a
+	 ie: $ php indexar.php --f=5 --t=1 --l=x -a
 
 Autor: snoop852@gmail.com ( para argentop2p.net -ex argentop2p.com.ar-)
 Fecha: 08/12/05 -
@@ -15,18 +15,18 @@ Fecha: 08/12/05 -
 
 19.02.09 - Agregado de filtro de nuevos y muestra de feedback
 20.02.09 - Agregado que ponga como nuevos los posts modificados.
-           No indexa los posts cerrados.
+	   No indexa los posts cerrados.
 26.02.09 - Distingue entre post nuevos y modificados
-           Mínima optimización
+	   Mínima optimización
 28.02.09 - Modificados nombres de campos por migración a SMF 2.0 RC1
 02.03.09 - Soporte para UTF8
 04-10-10 - Agregada compatibilidad con PHP 5.3 (DAX)
 03-08-12 - Agregado control de tiempo de ejecución y año de material (Camello_AR)
 27-11-13 - Agregado imágenes de HD (Camello_AR)
 13-05-14 - Limpieza y estandarización de código
-           Parametro "a" para generar lista con año
-           Opción de ejecutar por consola
-           Arreglo en procesamiento de "l"
+	   Parametro "a" para generar lista con año
+	   Opción de ejecutar por consola
+	   Arreglo en procesamiento de "l"
 
 -----------------------------------------------------
 Por favor, no cambiar los copyleft correspondientes.
@@ -61,73 +61,73 @@ require_once('../Settings.php');
 function limpiaCOM($cadena){
 // Lista de palabras a eliminar
  $pal_a_eliminar = array("(arg)",
-                        "[arg]",
-                        "(BT)",
-                        "[BT]",
-                        "(com)",
-                        "[com]",
-                        "(DD)",
-                        "[DD]",
-                        "(doc)",
-                        "[doc]",
-                        "(documental)",
-                        "[documental]",
-                        "(documentales)",
-                        "[documentales]",
-                        "(drivers)",
-                        "[drivers]",
-                        "(dvd5)",
-                        "[dvd5]",
-                        "(ed2k)",
-                        "[ed2k]",
-                        "[esp]",
-                        "(esp)",
-                        "(game)",
-                        "[game]",
-                        "[inf]",
-                        "(inf)",
-                        "(infantiles)",
-                        "[infantiles]",
-                        "(juego)",
-                        "[juego]",
-                        "(juegos)",
-                        "[juegos]",
-                        "[lat]",
-                        "(lat)",
-                        "(libro)",
-                        "[libro]",
-                        "(manual)",
-                        "[manual]",
-                        "(obras)",
-                        "[obras]",
-                        "(otro)",
-                        "[otro]",
-                        "(otros)",
-                        "[otros]",
-                        "(P2M)",
-                        "[P2M]",
-                        "(pack)",
-                        "[pack]",
-                        "(PC)",
-                        "[PC]",
-                        "(ped)",
-                        "[ped]",
-                        "(PS2)",
-                        "[PS2]",
-                        "(soft)",
-                        "[soft]",
-                        "(software)",
-                        "[software]",
-                        "(url)",
-                        "[url]",
-                        "(varios)",
-                        "[varios]",
-                        "(vid)",
-                        "[vid]",
-                        "(video)",
-                        "[video]",
-                        "[xxx]",
-                        "(xxx)");
+			"[arg]",
+			"(BT)",
+			"[BT]",
+			"(com)",
+			"[com]",
+			"(DD)",
+			"[DD]",
+			"(doc)",
+			"[doc]",
+			"(documental)",
+			"[documental]",
+			"(documentales)",
+			"[documentales]",
+			"(drivers)",
+			"[drivers]",
+			"(dvd5)",
+			"[dvd5]",
+			"(ed2k)",
+			"[ed2k]",
+			"[esp]",
+			"(esp)",
+			"(game)",
+			"[game]",
+			"[inf]",
+			"(inf)",
+			"(infantiles)",
+			"[infantiles]",
+			"(juego)",
+			"[juego]",
+			"(juegos)",
+			"[juegos]",
+			"[lat]",
+			"(lat)",
+			"(libro)",
+			"[libro]",
+			"(manual)",
+			"[manual]",
+			"(obras)",
+			"[obras]",
+			"(otro)",
+			"[otro]",
+			"(otros)",
+			"[otros]",
+			"(P2M)",
+			"[P2M]",
+			"(pack)",
+			"[pack]",
+			"(PC)",
+			"[PC]",
+			"(ped)",
+			"[ped]",
+			"(PS2)",
+			"[PS2]",
+			"(soft)",
+			"[soft]",
+			"(software)",
+			"[software]",
+			"(url)",
+			"[url]",
+			"(varios)",
+			"[varios]",
+			"(vid)",
+			"[vid]",
+			"(video)",
+			"[video]",
+			"[xxx]",
+			"(xxx)");
 
  $cadenanueva = str_ireplace($pal_a_eliminar, "", $cadena);
  return trim($cadenanueva);
@@ -136,7 +136,7 @@ function limpiaCOM($cadena){
 // Imprime el titulo de los caracteres
 // Added by Predicador
 function construyeLetra($cad){
- return "<br><br>\n   <span style=\"font-weight: bold\"><span style=\"font-size: 18px; line-height: normal\"><a name=\"_                                                                                   ".$cad."\">Letra ".$cad."</a></span></span>\n <br>\n";
+ return "<br><br>\n   <span style=\"font-weight: bold\"><span style=\"font-size: 18px; line-height: normal\"><a name=\"_".$cad."\">Letra ".$cad."</a></span></span>\n <br>\n";
 }
 
 // Función para conectarse con la base
@@ -211,7 +211,7 @@ elseif (isset($_ARG["l"])){
 }
 else {
  // SMF 2.0.X
- $SQL = "SELECT t.id_topic, m.subject, m.poster_name, m.poster_time, m.modified_time, b.name FROM smf_messages m, smf_to                                                                                   pics t, smf_boards b WHERE t.locked=0 AND t.id_first_msg=m.id_msg AND m.id_board=b.id_board AND m.id_board='".$foro."' A                                                                                   ND subject LIKE '".$cadenaBusca."%'";
+ $SQL = "SELECT t.id_topic, m.subject, m.poster_name, m.poster_time, m.modified_time, b.name FROM smf_messages m, smf_topics t, smf_boards b WHERE t.locked=0 AND t.id_first_msg=m.id_msg AND m.id_board=b.id_board AND m.id_board='".$foro."' AND subject LIKE '".$cadenaBusca."%'";
 }
 
 // Parsing del parámetro "l"
@@ -220,7 +220,7 @@ if ($letra){
  $letra = strtolower($letra);
  $archivo = $archivo . "_" . $letra;
  // SMF 2.0.X
- $SQL = "SELECT t.id_topic, m.subject, m.poster_name, m.poster_time, m.modified_time, b.name FROM smf_messages m, smf_to                                                                                   pics t, smf_boards b WHERE t.locked=0 AND t.id_first_msg=m.id_msg AND m.id_board=b.id_board AND m.id_board='".$foro."' A                                                                                   ND ((subject LIKE '".$cadenaBusca.$letra."%') OR (subject LIKE '".$cadenaBusca." ".$letra."%'))";
+ $SQL = "SELECT t.id_topic, m.subject, m.poster_name, m.poster_time, m.modified_time, b.name FROM smf_messages m, smf_topics t, smf_boards b WHERE t.locked=0 AND t.id_first_msg=m.id_msg AND m.id_board=b.id_board AND m.id_board='".$foro."' AND ((subject LIKE '".$cadenaBusca.$letra."%') OR (subject LIKE '".$cadenaBusca." ".$letra."%'))";
 }
 
 // Conexión a la base de datos
@@ -247,7 +247,7 @@ while ($datos = mysql_fetch_array($rs)){
  // Se construye un arreglo con cada linea
  // Filtra vacíos. Added by Camello_AR
  if (rtrim($titulo) != ""){
-  $index[] = array("titulo" => $titulo, "usuario" => $usuario, "topicId" => $topicId, "ptime" => $postTime, "mtime" => $                                                                                   modifiedtime); // Se agregó $modifiedtime al array. Added by elrosti
+  $index[] = array("titulo" => $titulo, "usuario" => $usuario, "topicId" => $topicId, "ptime" => $postTime, "mtime" => $modifiedtime); // Se agregó $modifiedtime al array. Added by elrosti
  }
 }
 mysql_free_result($rs);
@@ -288,19 +288,19 @@ function filternonew()
 </script>");
 
 // Información del foro y fecha que se construyó el indice
-fwrite($handle, "   <span style=\"font-size: 18px; line-height: normal; font-weight: bold\">Indice de links del foro:                                                                                      ". $boardName ."<br></span>\n
-   <span style=\"font-size: 10px; line-height: normal\">Generado el ". date("d.m.y  \a\ \l\a\s H:i:s")."</span><br><br>\                                                                                   n");
+fwrite($handle, "   <span style=\"font-size: 18px; line-height: normal; font-weight: bold\">Indice de links del foro:   ". $boardName ."<br></span>\n
+   <span style=\"font-size: 10px; line-height: normal\">Generado el ". date("d.m.y  \a\ \l\a\s H:i:s")."</span><br><br>\n");
 
 // Filtro de todos o solo nuevos-actualizados
-fwrite($handle, "Mostrar <select onchange=\"window.setTimeout('showWait(),50');window.setTimeout('filternonew()',100);\"                                                                                   >
+fwrite($handle, "Mostrar <select onchange=\"window.setTimeout('showWait(),50');window.setTimeout('filternonew()',100);\">
   <option value=\"all\" selected>todos los posts</option>
   <option value=\"new\">solo los nuevos y actualizados</option>
  </select><br><br> \n
- <div id=\"pleasewaitScreen\" style=\"background:#ff0000;color:#ffffff;position:absolute;z-index:5;top:50%;left:42%;padd                                                                                   ing:10px;display:none;\">Procesando!!!</div>\n" );
+ <div id=\"pleasewaitScreen\" style=\"background:#ff0000;color:#ffffff;position:absolute;z-index:5;top:50%;left:42%;padding:10px;display:none;\">Procesando!!!</div>\n" );
 
 // Información en fechas de los post nuevos y actualizados
-fwrite($handle, "   <span style=\"font-size: 12px; line-height: normal\">Las lineas marcadas con <img src=/list/new.png>                                                                                    corresponden a posts nuevos entre el ". date("d.m.y", (time() - ($diasNuevo * 24 * 60 * 60)))." y el ". date("d.m.y") .                                                                                   ".<br>
-Las lineas marcadas con <img src=/list/updated.png> corresponden a posts actualizados entre el ". date("d.m.y", (time()                                                                                    - ($diasNuevo * 24 * 60 * 60)))." y el ". date("d.m.y") .".<br>Las lineas marcadas con <img src=/list/hd.png> <img src=/                                                                                   list/hd1080.png> <img src=/list/hd720.png> corresponden a material en Alta Definición</span><br><br>\n");
+fwrite($handle, "   <span style=\"font-size: 12px; line-height: normal\">Las lineas marcadas con <img src=/list/new.png> corresponden a posts nuevos entre el ". date("d.m.y", (time() - ($diasNuevo * 24 * 60 * 60)))." y el ". date("d.m.y") .".<br>
+Las lineas marcadas con <img src=/list/updated.png> corresponden a posts actualizados entre el ". date("d.m.y", (time() - ($diasNuevo * 24 * 60 * 60)))." y el ". date("d.m.y") .".<br>Las lineas marcadas con <img src=/list/hd.png> <img src=/list/hd1080.png> <img src=/list/hd720.png> corresponden a material en Alta Definición</span><br><br>\n");
 
 // Imprimimos el indice en un archivo
 if (!$letra){
@@ -342,8 +342,8 @@ foreach ($index as $data){
  $cantPelis = $cantPelis + 1;
  $isNovedad = $data['ptime'] >= $timewindow;
 
- // $isModified es válido si (mtime inside $timewindow) y si la modificación tiene lugar al menos un día después de la f                                                                                   echa de creación
- $isModified = ($data['mtime'] >= $timewindow) && ($data['mtime'] >= ($data['ptime'] + 86400)) ? true : false; // 86400                                                                                    = 60 * 60 * 24 :: o sea, 1 día en segundos
+ // $isModified es válido si (mtime inside $timewindow) y si la modificación tiene lugar al menos un día después de la fecha de creación
+ $isModified = ($data['mtime'] >= $timewindow) && ($data['mtime'] >= ($data['ptime'] + 86400)) ? true : false; // 86400 = 60 * 60 * 24 :: o sea, 1 día en segundos
 
  // Probamos si es un enlace nuevo o no
  if ($isNovedad || $isModified){
@@ -356,7 +356,7 @@ foreach ($index as $data){
    $oneline .= "     <img src=/Smileys/argentos/icon_arrow.gif> <img src=/list/new.png> ";
    // Aquí las cosas nuevas se guardan en un txt para ser leídas desde IRC
    // Descomentar para generar
-   // $ircnov .= "Novedad ED2K: ". $data['titulo'] ." posteada por ". $data['usuario']. ". Link: http://www.argentop2p.n                                                                                   et/index.php?topic=". $data['topicId']."\n";
+   // $ircnov .= "Novedad ED2K: ". $data['titulo'] ." posteada por ". $data['usuario']. ". Link: http://www.argentop2p.net/index.php?topic=". $data['topicId']."\n";
   }
  }
  else{
@@ -367,13 +367,13 @@ foreach ($index as $data){
  $anio = recupera_anio($data['titulo']);
  // Parsing del parametro "a" para generar lista con año al inicio
  if (isset($_GET["a"])){
-  $oneline .= "(". $anio['anio'] .") <a href=http://www.argentop2p.net/index.php?topic=". $data['topicId'] ." target=_bl                                                                                   ank>". $anio['linea'] ."</a><em> - (". $data['usuario'] .")</em><br>";
+  $oneline .= "(". $anio['anio'] .") <a href=http://www.argentop2p.net/index.php?topic=". $data['topicId'] ." target=_blank>". $anio['linea'] ."</a><em> - (". $data['usuario'] .")</em><br>";
  }
  elseif (isset($_ARG["a"])){
-  $oneline .= "(". $anio['anio'] .") <a href=http://www.argentop2p.net/index.php?topic=". $data['topicId'] ." target=_bl                                                                                   ank>". $anio['linea'] ."</a><em> - (". $data['usuario'] .")</em><br>";
+  $oneline .= "(". $anio['anio'] .") <a href=http://www.argentop2p.net/index.php?topic=". $data['topicId'] ." target=_blank>". $anio['linea'] ."</a><em> - (". $data['usuario'] .")</em><br>";
  }
  else {
- $oneline .= "<a href=http://www.argentop2p.net/index.php?topic=". $data['topicId'] ." target=_blank>". $data['titulo']                                                                                    ."</a><em> - (". $data['usuario'] .")</em><br>";
+ $oneline .= "<a href=http://www.argentop2p.net/index.php?topic=". $data['topicId'] ." target=_blank>". $data['titulo'] ."</a><em> - (". $data['usuario'] .")</em><br>";
  }
  // Solo cerrar el tag DIV si no es algo nuevo o modificado
  if (!($isNovedad || $isModified)){
@@ -390,7 +390,7 @@ foreach ($index as $data){
 fwrite($handle, "<br><br><span style=\"font-weight: bold\">:.:: Posts nuevos: ". $cantPelisNew ."<br>
 :.:: Post modificados: ". $cantPelisMod ."<br>
 :.:: Total de posts publicados: ". $cantPelis ."<br></span><br>\n
-<span style=\"font-size: 10px; line-height: normal\">::.: IndexA version ". $version ." by ArgentoP2P.net Coders Team ::                                                                                    2005-2014. </span>\n");
+<span style=\"font-size: 10px; line-height: normal\">::.: IndexA version ". $version ." by ArgentoP2P.net Coders Team :: 2005-2014. </span>\n");
 fclose($handle);
 
 // Escribir el archivo TXT si hay un archivo y foro 5 (ed2k en argentop2p).
@@ -430,24 +430,24 @@ function recupera_anio ($linea){
 // Requiere entrada la linea que desea procesarse
 // Salida, Variable de Cadena
 function add_HD ($linea){
- $hd = array(   "*hd*",
-                "(hd)",
-                "[hd]",
-                "*720p*",
-                "(720p)",
-                "[720p]",
-                "*1080p*",
-                "(1080p)",
-                "[1080p]");
- $img_hd = array(       "<img src=/list/hd.png>",
-                        "<img src=/list/hd.png>",
-                        "<img src=/list/hd.png>",
-                        "<img src=/list/hd720.png>",
-                        "<img src=/list/hd720.png>",
-                        "<img src=/list/hd720.png>",
-                        "<img src=/list/hd1080.png>",
-                        "<img src=/list/hd1080.png>",
-                        "<img src=/list/hd1080.png>");
+ $hd = array(	"*hd*",
+		"(hd)",
+		"[hd]",
+		"*720p*",
+		"(720p)",
+		"[720p]",
+		"*1080p*",
+		"(1080p)",
+		"[1080p]");
+ $img_hd = array(	"<img src=/list/hd.png>",
+			"<img src=/list/hd.png>",
+			"<img src=/list/hd.png>",
+			"<img src=/list/hd720.png>",
+			"<img src=/list/hd720.png>",
+			"<img src=/list/hd720.png>",
+			"<img src=/list/hd1080.png>",
+			"<img src=/list/hd1080.png>",
+			"<img src=/list/hd1080.png>");
  $linea = str_ireplace($hd,$img_hd,$linea,$tot);
  return $linea;
 }
