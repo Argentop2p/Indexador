@@ -3,15 +3,18 @@
 -----------------------------------------------------
 Modulo: Script Indexador
 Descripción: Indexar los posts, con TAGs.
-Entrada: f= forum number; t= que buscar (1:(COM) - 2: (PED));
-	 l= (letra)  [l es un parámetro opcional]; a= lista por año [a es un parámetro opcional]
-	 ie: indexar.php?f=5&t=1&l=d&a
-	 ie: $ php indexar.php --f=5 --t=1 --l=x -a
+Entrada: f=# Donde # es el numero de foro de SMF
+	 t=# Donde # es 1:(COM) o 2:(PED) [t  es un parámetro opcional, por defecto 1:(COM)]
+	 l=* Donde * es una letra [l es un parámetro opcional]
+	 a= lista por año [a es un parámetro opcional]
+Ejemplo:
+	 http://www.tuweb.com.ar/indexar.php?f=5&t=1&l=d&a
+	 $ php indexar.php --f=5 --t=1 --l=d -a
 
 Autor: snoop852@gmail.com ( para argentop2p.net -ex argentop2p.com.ar-)
 Fecha: 08/12/05 -
 * Modificado completamente por Predicador (25.01.2006)
-* Agregados por elrosti, DAX y Camello_AR
+* Agregados por elrosti, DAX, Camello_AR y otros
 
 19.02.09 - Agregado de filtro de nuevos y muestra de feedback
 20.02.09 - Agregado que ponga como nuevos los posts modificados.
@@ -27,6 +30,9 @@ Fecha: 08/12/05 -
 	   Parametro "a" para generar lista con año
 	   Opción de ejecutar por consola
 	   Arreglo en procesamiento de "l"
+14-08-14 - Arreglo en función recupera_anio
+	   Cambio en mensajes de alerta y salida
+	   Arreglo en analisis del parámetro "t" por defecto (COM)
 
 -----------------------------------------------------
 Por favor, no cambiar los copyleft correspondientes.
@@ -36,7 +42,7 @@ http://www.gnu.org/licenses/gpl.txt
 */
 
 $seg1 = microtime(true);
-$version = "1.4a final.";
+$version = "1.4b final.";
 
 // Nombre del archivo de salida
 // Se complementa con el numero del foro y luego .html
@@ -51,6 +57,10 @@ $ircnov = "";
 
 // Por cuantos días algo se considera nuevo.
 $diasNuevo = "7";
+
+// Evita advertencias de PHP
+$letra = "";
+$intBusca = "";
 
 // Variables de la DB
 // $db_server,  $db_user,  $db_passwd, $db_name
@@ -176,9 +186,6 @@ elseif (isset($_ARG["t"])){
   $intBusca = intval($_ARG["t"]);
  }
 }
-else {
- exit("¿Tratando de cagarme?<br> Por las dudas guardo tu IP.<br>"); // Solo para asustar
-}
 switch ($intBusca){
 case 1 : $cadenaBusca = "(COM)";
 break;
@@ -199,7 +206,7 @@ elseif (isset($_ARG["f"])){
  }
 }
 else {
- exit("¿Tratando de cagarme?<br> Por las dudas guardo tu IP.<br>"); // Solo para asustar
+ exit("No se suministró el parámetro f.");
 }
 
 // Evaluo si se suministró el parámetro "l"
@@ -224,15 +231,15 @@ if ($letra){
 }
 
 // Conexión a la base de datos
-conectarse($db_server, $db_user, $db_passwd,$db_name) or exit("Se ha producido un error al conectarse");
+conectarse($db_server, $db_user, $db_passwd,$db_name) or exit("Se ha producido un error al conectarse.");
 
 // Pasar texto a UTF8 en caso de necesitarlo
 if ($db_character_set == "utf8"){
- mysql_query ("SET NAMES 'utf8'") or exit("Se ha producido un error al ejecutar la consulta\n" .$SQL);
+ mysql_query ("SET NAMES 'utf8'") or exit("Se ha producido un error al ejecutar la consulta: " .$SQL);
 }
 
 // Added by Predicador 25.01.2006
-$rs = mysql_query($SQL) or exit("Se ha producido un error al ejecutar la consulta\n" .$SQL);
+$rs = mysql_query($SQL) or exit("Se ha producido un error al ejecutar la consulta: " .$SQL);
 
 // Incializamos el array
 $index = array();
@@ -262,7 +269,7 @@ array_multisort($AuxArray, SORT_ASC, $index);
 // Si ya existe se destruye
 $archivo = $archivo . $foro . ".html";
 if (!($handle = fopen($archivo, "w"))){
- exit($archivo . " no es escribible, fijate los permisos.");
+ exit($archivo . " no es escribible, comprobar los permisos.");
 }
 
 // Encabezado javascript y función de filtro
@@ -402,26 +409,28 @@ if ($irctxt != ""){
     fclose($handle);
   }
   else {
-   exit($irctxt . " no es escribible, fijate los permisos.");
+   exit($irctxt . " no es escribible, comprobar los permisos.");
   }
  }
 }
 
+// Mensajes de salida y tiempo de ejecución
 $seg2 = microtime(true);
 $segs = $seg2-$seg1;
-echo "El proceso se ha completado sin errores.<br>";
+echo "El proceso se ha completado sin errores. ";
 echo "Indice del foro ". $boardName . " generado en $segs segundos";
 
 // Función recupera año
 function recupera_anio ($linea){
  $expresion = '/(\(|\[|\-)\d{4}(\)|\]|\-)/';
- preg_match($expresion, $linea, $aniot);
- $salida['anio'] = substr("$aniot[0]",1,4);
- //FIXME da advertencias cuando $aniot[0] es nulo
- $salida['linea'] = str_replace("$aniot[0]","",$linea);
- // Si no tiene año asume ####
- if ($salida['anio']==""){
+ if(preg_match($expresion, $linea, $aniot)) {
+  $salida['anio'] = substr("$aniot[0]",1,4);
+  $salida['linea'] = str_replace("$aniot[0]","",$linea);
+ }
+ else {
+  // Si no tiene año asume ####
   $salida['anio']="####";
+  $salida['linea'] ="$linea";
  }
  return $salida;
 }
